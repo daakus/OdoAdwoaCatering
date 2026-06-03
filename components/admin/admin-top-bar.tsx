@@ -6,10 +6,11 @@ import { MaterialIcon } from "@/components/home/material-icon";
 import { useAdminSearch } from "@/components/admin/admin-search-context";
 
 function searchPlaceholder(pathname: string) {
-  if (pathname.startsWith("/admin/services")) return "Search services or categories...";
-  if (pathname.startsWith("/admin/customers")) return "Search clients...";
-  if (pathname.startsWith("/admin/calendar")) return "Search rituals...";
-  return "Search appointments...";
+  if (pathname.startsWith("/admin/services")) return "Search menu items...";
+  if (pathname.startsWith("/admin/customers")) return "Search customers...";
+  if (pathname.startsWith("/admin/bookings")) return "Search orders...";
+  if (pathname.startsWith("/admin/calendar")) return "Search orders or events...";
+  return "Search...";
 }
 
 export function AdminTopBar(props: {
@@ -18,7 +19,7 @@ export function AdminTopBar(props: {
   avatarUrl?: string | null;
 }) {
   const pathname = usePathname();
-  const { displayName, subtitle = "Head Curator", avatarUrl } = props;
+  const { displayName, subtitle = "Admin", avatarUrl } = props;
   const { searchQuery, setSearchQuery } = useAdminSearch();
   const placeholder = searchPlaceholder(pathname);
 
