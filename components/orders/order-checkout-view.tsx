@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useCartStore } from "@/stores/cart-store";
@@ -33,9 +33,21 @@ export function OrderCheckoutView() {
   const [screenshot, setShot]     = useState<File | null>(null);
   const [submitting, setSub]      = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [mounted, setMounted]     = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const total = subtotal();
   const count = itemCount();
+
+  // Avoid hydration mismatch — Zustand localStorage state only available client-side
+  if (!mounted) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-stitch-surface pt-24">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-stitch-primary border-t-transparent" />
+      </div>
+    );
+  }
 
   if (count === 0) {
     return (
