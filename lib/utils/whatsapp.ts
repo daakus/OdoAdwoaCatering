@@ -24,6 +24,47 @@ export interface EventWhatsAppPayload {
   receiptUrl: string;
 }
 
+// ── Customer approval notifications (sent TO customer's number) ───────────────
+
+export function buildOrderConfirmationUrl(payload: {
+  customerName: string;
+  customerPhone: string;
+  totalGhs: number;
+}): string {
+  const text =
+    `Hello ${payload.customerName}! 🎉\n\n` +
+    `Your order from *Odo Adwoa Catering* has been *confirmed*.\n\n` +
+    `We are preparing your food now. We will call you on *${payload.customerPhone}* to arrange delivery or pickup.\n\n` +
+    `*Order total:* GH₵ ${payload.totalGhs.toFixed(2)}\n\n` +
+    `Thank you for choosing Odo Adwoa! 🌽\n` +
+    `_Deliciously Made. Freshly Served. Always the Best!_`;
+
+  const intlPhone = payload.customerPhone.replace(/^0/, "233");
+  return `https://wa.me/${intlPhone}?text=${encodeURIComponent(text)}`;
+}
+
+export function buildEventConfirmationUrl(payload: {
+  customerName: string;
+  customerPhone: string;
+  eventType: string;
+  eventDate: string;
+  guestCount: number;
+  depositGhs: number;
+}): string {
+  const text =
+    `Hello ${payload.customerName}! 🎊\n\n` +
+    `Your *${payload.eventType}* catering booking with *Odo Adwoa Catering* has been *confirmed*.\n\n` +
+    `📅 *Event Date:* ${payload.eventDate}\n` +
+    `👥 *Guests:* ${payload.guestCount}\n` +
+    `💰 *Deposit received:* GH₵ ${payload.depositGhs.toFixed(2)}\n\n` +
+    `We will contact you on *${payload.customerPhone}* to finalise all details.\n\n` +
+    `Thank you for choosing Odo Adwoa Catering! 🌽\n` +
+    `_Deliciously Made. Freshly Served. Always the Best!_`;
+
+  const intlPhone = payload.customerPhone.replace(/^0/, "233");
+  return `https://wa.me/${intlPhone}?text=${encodeURIComponent(text)}`;
+}
+
 function methodLabel(method: string) {
   if (method === "mtn_momo")         return "MTN MoMo";
   if (method === "vodafone_cash")    return "Vodafone Cash";

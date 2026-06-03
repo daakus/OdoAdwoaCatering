@@ -67,7 +67,12 @@ export default async function AdminApprovalsPage() {
                     <span className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(o.status)}`}>
                       {o.status}
                     </span>
-                    <OrderApprovalActions orderId={o.id} />
+                    <OrderApprovalActions
+                      orderId={o.id}
+                      customerName={o.customer_name}
+                      customerPhone={o.customer_phone}
+                      totalGhs={Number(o.total_ghs)}
+                    />
                   </div>
                 </article>
               ))
@@ -101,7 +106,15 @@ export default async function AdminApprovalsPage() {
                     <span className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(e.status)}`}>
                       {e.status}
                     </span>
-                    <EventApprovalActions eventId={e.id} />
+                    <EventApprovalActions
+                      eventId={e.id}
+                      customerName={e.customer_name}
+                      customerPhone={e.customer_phone}
+                      eventType={e.event_type}
+                      eventDate={e.event_date}
+                      guestCount={e.guest_count}
+                      depositGhs={Number(e.deposit_amount_ghs)}
+                    />
                   </div>
                 </article>
               ))
