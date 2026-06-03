@@ -80,10 +80,11 @@ export async function submitOrder(formData: FormData): Promise<SubmitOrderResult
     .upload(filePath, bytes, { contentType: screenshot.type || "image/png", upsert: false });
   if (uploadErr) return { error: `Screenshot upload failed: ${uploadErr.message}` };
 
-  const { data: urlData } = supabase.storage
+  // Use a signed URL (1 year) so the vendor can open it without logging in
+  const { data: signedData } = await supabase.storage
     .from("payment-screenshots")
-    .getPublicUrl(filePath);
-  const receiptUrl = urlData?.publicUrl ?? "";
+    .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+  const receiptUrl = signedData?.signedUrl ?? "";
 
   // ── Insert order ─────────────────────────────────────────────────────────────
   const { data: order, error: orderErr } = await supabase

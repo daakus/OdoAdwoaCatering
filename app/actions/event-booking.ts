@@ -48,10 +48,11 @@ export async function submitEventBooking(formData: FormData) {
     .upload(filePath, bytes, { contentType: screenshot.type || "image/png", upsert: false });
   if (uploadErr) return { error: uploadErr.message };
 
-  const { data: urlData } = supabase.storage
+  // Use a signed URL (1 year) so the vendor can open it without logging in
+  const { data: signedData } = await supabase.storage
     .from("payment-screenshots")
-    .getPublicUrl(filePath);
-  const receiptUrl = urlData?.publicUrl ?? "";
+    .createSignedUrl(filePath, 60 * 60 * 24 * 365);
+  const receiptUrl = signedData?.signedUrl ?? "";
 
   const { data: booking, error: bookingErr } = await supabase
     .from("event_bookings")
