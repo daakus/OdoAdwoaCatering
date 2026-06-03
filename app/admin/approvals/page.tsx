@@ -1,4 +1,5 @@
 import { AdminPageHeader, AdminEmptyState } from "@/components/admin/admin-shared";
+import { OrderApprovalActions, EventApprovalActions } from "@/components/admin/approvals-actions";
 import { createClient } from "@/supabase/server";
 
 function statusBadge(status: string) {
@@ -62,9 +63,12 @@ export default async function AdminApprovalsPage() {
                     </div>
                     <p className="shrink-0 font-bold text-stitch-primary">GH₵ {Number(o.total_ghs).toFixed(2)}</p>
                   </div>
-                  <span className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(o.status)}`}>
-                    {o.status}
-                  </span>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(o.status)}`}>
+                      {o.status}
+                    </span>
+                    <OrderApprovalActions orderId={o.id} />
+                  </div>
                 </article>
               ))
             )}
@@ -93,9 +97,12 @@ export default async function AdminApprovalsPage() {
                     </div>
                     <p className="shrink-0 font-bold text-stitch-primary">GH₵ {Number(e.deposit_amount_ghs).toFixed(2)}</p>
                   </div>
-                  <span className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(e.status)}`}>
-                    {e.status}
-                  </span>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className={`rounded-full px-3 py-0.5 text-xs font-bold uppercase ${statusBadge(e.status)}`}>
+                      {e.status}
+                    </span>
+                    <EventApprovalActions eventId={e.id} />
+                  </div>
                 </article>
               ))
             )}

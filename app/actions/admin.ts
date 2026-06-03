@@ -37,6 +37,29 @@ export async function setPaymentVerification(paymentId: string, verification: "v
   return { success: true as const };
 }
 
+export async function setOrderStatus(orderId: string, status: string) {
+  const { supabase, ok } = await assertAdmin();
+  if (!ok) return { error: "Unauthorized" };
+  const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
+  if (error) return { error: error.message };
+  revalidatePath("/admin");
+  revalidatePath("/admin/bookings");
+  revalidatePath("/admin/approvals");
+  revalidatePath("/admin/payments");
+  return { success: true as const };
+}
+
+export async function setEventStatus(eventId: string, status: string) {
+  const { supabase, ok } = await assertAdmin();
+  if (!ok) return { error: "Unauthorized" };
+  const { error } = await supabase.from("event_bookings").update({ status }).eq("id", eventId);
+  if (error) return { error: error.message };
+  revalidatePath("/admin");
+  revalidatePath("/admin/bookings");
+  revalidatePath("/admin/approvals");
+  return { success: true as const };
+}
+
 export async function upsertStaff(form: {
   id?: string;
   display_name: string;
