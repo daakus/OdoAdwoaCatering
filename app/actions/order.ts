@@ -10,7 +10,15 @@ export interface OrderLineInput {
   quantity: number;
 }
 
-export async function submitOrder(formData: FormData) {
+export interface SubmitOrderResult {
+  error?: string;
+  success?: true;
+  orderId?: string;
+  receiptUrl?: string;
+  newAccountCreated?: boolean;
+}
+
+export async function submitOrder(formData: FormData): Promise<SubmitOrderResult> {
   const customerName  = String(formData.get("customer_name") ?? "").trim();
   const customerPhone = String(formData.get("customer_phone") ?? "").trim();
   const customerEmail = String(formData.get("customer_email") ?? "").trim();
@@ -39,24 +47,44 @@ export async function submitOrder(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Upload screenshot
+  // ── Auto-create account if guest provides an email ──────────────────────────
+  let userId = user?.id ?? null;
+  let newAccountCreated = false;
+
+  if (!user && customerEmail) {
+    const { data: signupData, error: signupErr } = await supabase.auth.signUp({
+      email: customerEmail,
+      password: crypto.randomUUID(), // random password — they'll set it via email link
+      options: {
+        data: { full_name: customerName, phone: customerPhone },
+      },
+    });
+    if (!signupErr && signupData.user && !signupData.user.identities?.length === false) {
+      // identities.length === 0 means email already registered — skip
+      userId = signupData.user.id;
+      newAccountCreated = true;
+    }
+  }
+
+  // ── Upload screenshot ────────────────────────────────────────────────────────
   const fileExt  = screenshot.name.split(".").pop() || "png";
   const filePath = `orders/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
   const bytes    = await screenshot.arrayBuffer();
   const { error: uploadErr } = await supabase.storage
     .from("payment-screenshots")
     .upload(filePath, bytes, { contentType: screenshot.type || "image/png", upsert: false });
-  if (uploadErr) return { error: uploadErr.message };
+  if (uploadErr) return { error: `Screenshot upload failed: ${uploadErr.message}` };
 
   const { data: urlData } = supabase.storage
     .from("payment-screenshots")
     .getPublicUrl(filePath);
   const receiptUrl = urlData?.publicUrl ?? "";
 
+  // ── Insert order ─────────────────────────────────────────────────────────────
   const { data: order, error: orderErr } = await supabase
     .from("orders")
     .insert({
-      user_id:           user?.id ?? null,
+      user_id:           userId,
       customer_name:     customerName,
       customer_phone:    customerPhone,
       customer_email:    customerEmail || null,
@@ -71,6 +99,7 @@ export async function submitOrder(formData: FormData) {
     .single();
   if (orderErr || !order) return { error: orderErr?.message ?? "Failed to create order." };
 
+  // ── Insert order items ───────────────────────────────────────────────────────
   const itemRows = lines.map((l) => ({
     order_id:       order.id,
     item_id:        l.itemId,
@@ -85,5 +114,5 @@ export async function submitOrder(formData: FormData) {
   revalidatePath("/customer");
   revalidatePath("/admin");
 
-  return { success: true as const, orderId: order.id, receiptUrl };
+  return { success: true, orderId: order.id, receiptUrl, newAccountCreated };
 }

@@ -23,15 +23,16 @@ export function OrderCheckoutView() {
   const fileRef = useRef<HTMLInputElement>(null);
   const { lines, subtotal, itemCount, updateQuantity, removeItem, clearCart } = useCartStore();
 
-  const [step, setStep]       = useState<Step>(1);
-  const [name, setName]       = useState("");
-  const [phone, setPhone]     = useState("");
-  const [email, setEmail]     = useState("");
-  const [notes, setNotes]     = useState("");
-  const [method, setMethod]   = useState<"mtn_momo" | "vodafone_cash" | "airteltigo_money">("mtn_momo");
-  const [reference, setRef]   = useState("");
-  const [screenshot, setShot] = useState<File | null>(null);
-  const [submitting, setSub]  = useState(false);
+  const [step, setStep]           = useState<Step>(1);
+  const [name, setName]           = useState("");
+  const [phone, setPhone]         = useState("");
+  const [email, setEmail]         = useState("");
+  const [notes, setNotes]         = useState("");
+  const [method, setMethod]       = useState<"mtn_momo" | "vodafone_cash" | "airteltigo_money">("mtn_momo");
+  const [reference, setRef]       = useState("");
+  const [screenshot, setShot]     = useState<File | null>(null);
+  const [submitting, setSub]      = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const total = subtotal();
   const count = itemCount();
@@ -84,11 +85,12 @@ export function OrderCheckoutView() {
         customerPhone:    phone.trim(),
         paymentMethod:    method,
         paymentReference: reference.trim(),
-        receiptUrl:       res.receiptUrl,
+        receiptUrl:       res.receiptUrl ?? "",
         lines,
         total,
       });
       clearCart();
+      if (res.newAccountCreated) setEmailSent(true);
       toast.success("Order placed! Opening WhatsApp to confirm with vendor…");
       setTimeout(() => {
         window.open(waUrl, "_blank");
@@ -106,6 +108,20 @@ export function OrderCheckoutView() {
           <p className="font-label text-[10px] uppercase tracking-[0.3em] text-stitch-secondary">Checkout</p>
           <h1 className="mt-2 font-display text-3xl text-orange-900">{stepLabel[step]}</h1>
         </header>
+
+        {/* ── Email confirmation banner ── */}
+        {emailSent && (
+          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-green-300 bg-green-50 p-4 text-sm text-green-900">
+            <MaterialIcon name="mark_email_unread" className="mt-0.5 shrink-0 text-green-600" />
+            <div>
+              <p className="font-bold">Account created — check your email!</p>
+              <p className="mt-1 text-green-800/80">
+                We sent a confirmation link to <span className="font-semibold">{email}</span>.
+                Click it to activate your account and track your orders.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Step pills */}
         <div className="mb-8 flex justify-center gap-2">
@@ -169,7 +185,7 @@ export function OrderCheckoutView() {
               {[
                 { label: "Full Name *",          value: name,  set: setName,  type: "text",  placeholder: "e.g. Kwame Asante" },
                 { label: "Phone Number *",        value: phone, set: setPhone, type: "tel",   placeholder: "e.g. 0245123456" },
-                { label: "Email (optional)",      value: email, set: setEmail, type: "email", placeholder: "you@example.com" },
+                { label: "Email (optional — creates account)", value: email, set: setEmail, type: "email", placeholder: "you@example.com" },
               ].map((f) => (
                 <div key={f.label}>
                   <label className="mb-1 block text-xs font-bold uppercase tracking-widest text-stitch-secondary">{f.label}</label>
