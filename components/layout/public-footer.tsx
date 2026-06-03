@@ -33,9 +33,15 @@ export function PublicFooter() {
             ))}
           </nav>
         </div>
-        <p className="mt-10 text-center text-xs text-brand-bg/60 md:text-left">
-          © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
-        </p>
+        <div className="mt-10 flex flex-col gap-1 text-center md:text-left">
+          <p className="text-xs text-brand-bg/60">
+            © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
+          </p>
+          <p className="text-xs text-brand-bg/40">
+            Built by{" "}
+            <span className="font-medium text-brand-bg/60">Berndaakus Tech Solutions</span>
+          </p>
+        </div>
       </div>
     </footer>
   );
