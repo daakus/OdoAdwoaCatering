@@ -1,0 +1,137 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        stitch: {
+          surface: "#fdf9f4",
+          "surface-bright": "#fdf9f4",
+          "on-surface": "#1c1c19",
+          "on-background": "#1c1c19",
+          background: "#fdf9f4",
+          "surface-variant": "#e6e2dd",
+          "on-surface-variant": "#55433a",
+          tertiary: "#705746",
+          secondary: "#984728",
+          primary: "#96440c",
+          "on-primary": "#ffffff",
+          "primary-container": "#b65b24",
+          "on-primary-container": "#fffbff",
+          "primary-fixed": "#ffdbca",
+          "primary-fixed-dim": "#ffb690",
+          "on-primary-fixed": "#341100",
+          "surface-container": "#f1ede8",
+          "surface-container-low": "#f7f3ee",
+          "surface-container-high": "#ebe8e3",
+          "surface-container-highest": "#e6e2dd",
+          "surface-container-lowest": "#ffffff",
+          "secondary-fixed": "#ffdbcf",
+          "on-secondary": "#ffffff",
+          "on-secondary-container": "#752d10",
+          "tertiary-container": "#8b6f5d",
+          "tertiary-fixed": "#ffdcc6",
+          "on-secondary-fixed": "#380d00",
+          "on-secondary-fixed-variant": "#793013",
+          "on-tertiary-fixed": "#29170a",
+          "on-tertiary-fixed-variant": "#594232",
+          "on-primary-fixed-variant": "#783200",
+          "secondary-container": "#fc9671",
+          "outline-variant": "#dcc1b5",
+          outline: "#887368",
+          "inverse-surface": "#31302d",
+          "inverse-on-surface": "#f4f0eb",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        brand: {
+          bg: "#F4F0EB",
+          "bg-secondary": "#FAF7F3",
+          primary: "#C96A32",
+          "primary-dark": "#9C4A2B",
+          text: "#5E4636",
+          heading: "#2E2A27",
+          border: "#E7E0D8",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+        xl: "1rem",
+        "2xl": "1.25rem",
+      },
+      fontFamily: {
+        sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        display: ["var(--font-noto-serif)", "Georgia", "serif"],
+        headline: ["var(--font-noto-serif)", "Georgia", "serif"],
+        body: ["var(--font-manrope)", "system-ui", "sans-serif"],
+        label: ["var(--font-manrope)", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        soft: "0 4px 24px -4px rgba(46, 42, 39, 0.08), 0 8px 32px -8px rgba(201, 106, 50, 0.12)",
+        card: "0 2px 12px rgba(46, 42, 39, 0.06)",
+        editorial: "0 8px 24px rgba(150, 68, 12, 0.08)",
+        "nav-up": "0 -8px 24px rgba(150, 68, 12, 0.08)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(6px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.4s ease-out forwards",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+};
+export default config;

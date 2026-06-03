@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap");
+@import "react-day-picker/dist/style.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 94%;
+    --foreground: 28 24% 29%;
+    --card: 40 40% 97%;
+    --card-foreground: 28 24% 29%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 28 24% 29%;
+    --primary: 24 59% 49%;
+    --primary-foreground: 40 40% 98%;
+    --secondary: 40 30% 92%;
+    --secondary-foreground: 28 24% 22%;
+    --muted: 40 20% 90%;
+    --muted-foreground: 28 15% 42%;
+    --accent: 24 45% 94%;
+    --accent-foreground: 24 59% 35%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 40 40% 98%;
+    --border: 35 22% 88%;
+    --input: 35 22% 88%;
+    --ring: 24 59% 49%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 28 18% 12%;
+    --foreground: 40 30% 94%;
+    --card: 28 18% 15%;
+    --card-foreground: 40 30% 94%;
+    --popover: 28 18% 15%;
+    --popover-foreground: 40 30% 94%;
+    --primary: 24 55% 52%;
+    --primary-foreground: 28 18% 10%;
+    --secondary: 28 15% 22%;
+    --secondary-foreground: 40 30% 94%;
+    --muted: 28 12% 22%;
+    --muted-foreground: 40 15% 65%;
+    --accent: 28 15% 22%;
+    --accent-foreground: 24 55% 70%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 40 40% 98%;
+    --border: 28 12% 24%;
+    --input: 28 12% 24%;
+    --ring: 24 55% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .glow-gradient {
+    background: linear-gradient(135deg, #96440c 0%, #b65b24 100%);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  }
+
+  .glow-gradient {
+    background: linear-gradient(135deg, #96440c 0%, #b65b24 100%);
+  }
+
+  .signature-label {
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+  }
+
+  .admin-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  .admin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .admin-scrollbar::-webkit-scrollbar-thumb {
+    background: #dcc1b5;
+    border-radius: 10px;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
