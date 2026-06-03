@@ -92,11 +92,10 @@ export function AdminServicesView(props: {
         <section className="mb-10 flex flex-col items-start justify-between gap-6 md:mb-16 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <h2 className="mb-4 font-display text-4xl leading-tight tracking-tight text-stitch-on-background md:text-5xl">
-              Curation of Beauty
+              Menu Management
             </h2>
             <p className="text-lg font-light leading-relaxed text-stitch-tertiary">
-              Manage your atelier&apos;s menu of luxury experiences. Every service is a signature of
-              radiant elegance.
+              Manage your food menu items, prices, and categories.
             </p>
           </div>
           <button
@@ -112,9 +111,9 @@ export function AdminServicesView(props: {
         <section className="mb-10 grid grid-cols-1 gap-6 md:mb-16 md:grid-cols-12">
           <div className="relative flex items-end overflow-hidden rounded-xl bg-stitch-surface-container-low p-8 md:col-span-8">
             <div className="relative z-10">
-              <p className="signature-label mb-2 text-xs text-stitch-secondary">Portfolio Overview</p>
+              <p className="signature-label mb-2 text-xs text-stitch-secondary">Menu Overview</p>
               <h3 className="font-display text-3xl text-stitch-on-background md:text-4xl">
-                {services.length} Active Experiences
+                {services.length} Active Menu Items
               </h3>
             </div>
             <div className="absolute right-0 top-0 flex h-full w-1/3 items-center justify-center bg-gradient-to-l from-stitch-primary/5 to-transparent">
@@ -285,7 +284,7 @@ export function AdminServicesView(props: {
               </div>
               <p className="mb-2 font-display text-xl text-stone-600">Expand Your Menu</p>
               <p className="max-w-[200px] text-center text-sm font-light text-stone-400">
-                Create a new service offering for your elite clientele.
+                Add a new item to your menu.
               </p>
             </button>
           </div>
@@ -310,7 +309,7 @@ export function AdminServicesView(props: {
       >
         <div className="h-full overflow-y-auto p-8 dark:bg-stone-950 dark:!bg-none">
           <div className="mb-10 flex items-center justify-between">
-            <h3 className="font-display text-2xl text-stitch-on-background">Curate Service</h3>
+            <h3 className="font-display text-2xl text-stitch-on-background">Menu Item</h3>
             <button
               type="button"
               onClick={() => setDrawerOpen(false)}
@@ -423,7 +422,7 @@ export function AdminServicesView(props: {
             </div>
             <div className="space-y-2 pt-4">
               <label className="signature-label block text-[10px] text-stitch-secondary">
-                Experience Narrative
+                Description
               </label>
               <textarea
                 rows={4}
@@ -444,15 +443,15 @@ export function AdminServicesView(props: {
                 {saving
                   ? "Saving..."
                   : draft.id === "new"
-                    ? "Create Signature Service"
-                    : "Update Signature Service"}
+                    ? "Add Menu Item"
+                    : "Update Menu Item"}
               </button>
               {draft.id !== "new" ? (
                 <button
                   type="button"
                   className="signature-label mt-2 w-full py-4 text-xs font-bold text-stone-400 transition-colors hover:text-stitch-on-background"
                 >
-                  Archive Experience
+                  Deactivate Item
                 </button>
               ) : null}
             </div>
