@@ -73,14 +73,15 @@ create policy "orders_insert" on public.orders
   for insert with check (true);
 
 create policy "orders_select_owner" on public.orders
-  for select using (user_id = auth.uid() or auth.uid() in (
-    select id from public.profiles where role in ('admin','super_admin')
-  ));
+  for select using (
+    user_id = auth.uid()
+    or public.current_role_slug() in ('admin','super_admin')
+  );
 
 create policy "orders_update_admin" on public.orders
-  for update using (auth.uid() in (
-    select id from public.profiles where role in ('admin','super_admin')
-  ));
+  for update using (
+    public.current_role_slug() in ('admin','super_admin')
+  );
 
 create policy "order_items_insert" on public.order_items
   for insert with check (true);
@@ -88,25 +89,24 @@ create policy "order_items_insert" on public.order_items
 create policy "order_items_select" on public.order_items
   for select using (
     order_id in (
-      select id from public.orders
-      where user_id = auth.uid() or auth.uid() in (
-        select id from public.profiles where role in ('admin','super_admin')
-      )
+      select id from public.orders where user_id = auth.uid()
     )
+    or public.current_role_slug() in ('admin','super_admin')
   );
 
 create policy "event_bookings_insert" on public.event_bookings
   for insert with check (true);
 
 create policy "event_bookings_select_owner" on public.event_bookings
-  for select using (user_id = auth.uid() or auth.uid() in (
-    select id from public.profiles where role in ('admin','super_admin')
-  ));
+  for select using (
+    user_id = auth.uid()
+    or public.current_role_slug() in ('admin','super_admin')
+  );
 
 create policy "event_bookings_update_admin" on public.event_bookings
-  for update using (auth.uid() in (
-    select id from public.profiles where role in ('admin','super_admin')
-  ));
+  for update using (
+    public.current_role_slug() in ('admin','super_admin')
+  );
 
 -- ── Storage bucket ────────────────────────────────────────────────────────────
 insert into storage.buckets (id, name, public)
