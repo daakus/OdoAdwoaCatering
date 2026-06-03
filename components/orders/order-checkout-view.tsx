@@ -103,11 +103,11 @@ export function OrderCheckoutView() {
       });
       clearCart();
       if (res.newAccountCreated) setEmailSent(true);
-      toast.success("Order placed! Opening WhatsApp to confirm with vendor…");
-      setTimeout(() => {
-        window.open(waUrl, "_blank");
-        router.push(`/order/confirmation/${res.orderId}`);
-      }, 800);
+      toast.success("Order placed!");
+      // Pass WhatsApp URL to confirmation page — opening it there avoids popup blockers
+      router.push(
+        `/order/confirmation/${res.orderId}?wa=${encodeURIComponent(waUrl)}`
+      );
     }
   };
 
