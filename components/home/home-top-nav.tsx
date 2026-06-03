@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { SITE_NAME } from "@/lib/constants/site";
 import { MaterialIcon } from "@/components/home/material-icon";
 
 const links = [

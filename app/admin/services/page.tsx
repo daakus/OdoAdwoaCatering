@@ -9,11 +9,6 @@ function categoryName(join: CategoryJoin | CategoryJoin[] | null | undefined): s
   return row?.name?.trim() || "General";
 }
 
-function categorySlug(join: CategoryJoin | CategoryJoin[] | null | undefined): string {
-  if (!join) return "General";
-  const row = Array.isArray(join) ? join[0] : join;
-  return (row?.slug ?? row?.name ?? "General").trim() || "General";
-}
 
 const FALLBACK_CATEGORIES = [
   "General",
