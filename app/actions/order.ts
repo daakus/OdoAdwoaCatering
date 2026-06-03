@@ -54,15 +54,20 @@ export async function submitOrder(formData: FormData): Promise<SubmitOrderResult
   if (!user && customerEmail) {
     const { data: signupData, error: signupErr } = await supabase.auth.signUp({
       email: customerEmail,
-      password: crypto.randomUUID(), // random password — they'll set it via email link
+      password: crypto.randomUUID(),
       options: {
         data: { full_name: customerName, phone: customerPhone },
       },
     });
-    if (!signupErr && signupData.user && !signupData.user.identities?.length === false) {
-      // identities.length === 0 means email already registered — skip
+    // Silently skip if rate-limited or email already registered — order still goes through
+    const rateLimited = signupErr?.status === 429 ||
+      signupErr?.message?.toLowerCase().includes("rate limit");
+    const alreadyExists = signupData?.user?.identities?.length === 0;
+    if (!signupErr && !alreadyExists && signupData?.user) {
       userId = signupData.user.id;
       newAccountCreated = true;
+    } else if (rateLimited) {
+      // Continue as guest — don't block the order
     }
   }
 
