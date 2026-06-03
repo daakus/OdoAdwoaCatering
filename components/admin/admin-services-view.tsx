@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { upsertAdminService } from "@/app/actions/admin-services";
 import { useAdminSearch } from "@/components/admin/admin-search-context";
 import { MaterialIcon } from "@/components/home/material-icon";
@@ -55,6 +55,11 @@ export function AdminServicesView(props: {
   const [services, setServices] = useState<AdminServiceRecord[]>(initialServices);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Sync local state when server re-fetches after router.refresh()
+  useEffect(() => {
+    setServices(initialServices);
+  }, [initialServices]);
 
   const filtered = useMemo(() => {
     return services.filter((s) => {
